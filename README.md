@@ -32,3 +32,5 @@ Delete an experience
 3. Searching module
 The search module should allow the user to find an experience or a list of experiences based on one or multiple keywords. The results will be displayed as a list.
 This module should return the results based on location, used transportation or destination.
+
+
