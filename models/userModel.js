@@ -21,11 +21,11 @@ const User=sequelize.define("user",{
     password:{
         type:DataTypes.STRING,
         allowNull:false
-    },
-    isEnabled:{
-        type:DataTypes.BOOLEAN,
-        defaultValue:true
     }
+    // isEnabled:{
+    //     type:DataTypes.BOOLEAN,
+    //     defaultValue:true
+    // }
 });
 
 export{User}

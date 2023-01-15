@@ -1,0 +1,40 @@
+.transportNamebox{
+    margin-top: 2px;
+    margin-bottom: 5px;
+    text-transform: uppercase; 
+}
+
+.numberInput{
+    width: 120px;
+}
+
+.durationInput{
+    margin-top: 10px;
+    width:150px;
+}
+
+
+.form-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.submit-button{
+    margin-top: 10px;
+    width: 150px
+}
+
+.textarea{
+    resize: vertical;
+}
+
+.lander{
+    margin-top: 10px;
+}
+
+.checked {
+    color: orange;
+  }
+  .rating-bar{
+      flex-direction: row;
+  }

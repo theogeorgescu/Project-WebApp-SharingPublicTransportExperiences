@@ -29,18 +29,18 @@ const Feedback=sequelize.define("feedback",{
     observations:{
         type:DataTypes.STRING
     },
-    satisfactionLevel:{
+    statisfactionLevel:{
         type:DataTypes.INTEGER,
         allowNull:false
     }
 
 });
 
-// User.hasMany(Feedback, {
-//     foreignKey: {
-//         name: 'userId',
-//         allowNull: false
-//     }
-// });
+User.hasMany(Feedback, {
+    foreignKey: {
+        name: 'userID',
+        allowNull: false
+    }
+});
 
 export{Feedback};

@@ -12,7 +12,7 @@ import { Feedback } from "./models/feedbackModel.js";
 const app=express();
 
 User.hasMany(Feedback);
-Feedback.belongsTo(User, {through: "id"});
+Feedback.belongsTo(User, {through: "userID"});
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}));

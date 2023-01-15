@@ -7,9 +7,9 @@ const userRouter=express.Router();
 
 userRouter.get("/allUsers",async(request,response,next)=>{
     try{
-        const users=await User.findAll()
-        if(users.length>1){
-            response.json(users)
+        const user=await User.findAll()
+        if(user.length>1){
+            response.json(user)
         }else{
             response.sendStatus(204)
         }
