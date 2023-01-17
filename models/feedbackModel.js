@@ -1,6 +1,5 @@
 import { sequelize } from "../sequelize.js";
 import { DataTypes } from "sequelize";
-import { User } from "./userModel.js";
 
 const Feedback=sequelize.define("feedback",{
     id:{
@@ -36,11 +35,6 @@ const Feedback=sequelize.define("feedback",{
 
 });
 
-// User.hasMany(Feedback, {
-//     foreignKey: {
-//         name: 'userID',
-//         allowNull: false
-//     }
-// });
+
 
 export{Feedback};
