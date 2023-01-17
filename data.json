@@ -40,7 +40,7 @@
         ]
     },
     {
-       
+    
         "username": "bhurnell2",
         "email": "ncardoo2@state.tx.us",
         "password": "C4qtjf",
@@ -56,18 +56,18 @@
         ]
     },
     {
-       
+        
         "username": "nalekseicik3",
         "email": "ccawkwell3@hexun.com",
         "password": "9WuCbncvaj",
         "feedbacks":[
             {
-                "key":"",
-                "startingPoint":"",
-                "endingPoint":"",
-                "transportType":"",
-                "observations":"",
-                "statisfactionLevel":""
+                "key":"1",
+                "startingPoint":"Bucuresti",
+                "endingPoint":"Voluntari",
+                "transportType":"BUS",
+                "observations":"meh",
+                "statisfactionLevel":"3"
             }
         ]
     }

@@ -10,11 +10,11 @@ const Feedback=sequelize.define("feedback",{
     },
     startingPoint:{
         type:DataTypes.STRING,
-        allowNull:false
+        
     },
-    destnationPoint:{
+    endingPoint:{
         type:DataTypes.STRING,
-        allowNull:false
+       
     },
     transportType:{
         type:DataTypes.STRING,
@@ -31,16 +31,16 @@ const Feedback=sequelize.define("feedback",{
     },
     statisfactionLevel:{
         type:DataTypes.INTEGER,
-        allowNull:false
+        
     }
 
 });
 
-User.hasMany(Feedback, {
-    foreignKey: {
-        name: 'userID',
-        allowNull: false
-    }
-});
+// User.hasMany(Feedback, {
+//     foreignKey: {
+//         name: 'userID',
+//         allowNull: false
+//     }
+// });
 
 export{Feedback};

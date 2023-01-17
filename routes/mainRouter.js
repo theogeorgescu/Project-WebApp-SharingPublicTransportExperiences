@@ -19,7 +19,8 @@ router.put("/createDatabase", async (request, response, next) => {
   }
 });
 
-  router.post("/data", async (request, response, next) => {
+
+router.post("/data", async (request, response, next) => {
     try {
       const registry = {}; 
      
@@ -27,10 +28,9 @@ router.put("/createDatabase", async (request, response, next) => {
         const user = await User.create(u);
         
         for (let s of u.feedbacks) {
-          const feedback = await Feedback.create(s);
-          
+          const feedback = await Feedback.create(s);  //aici s a blocat
           registry[s.key] = feedback;
-          user.addFeedback(feedback)
+          user.addFeedbacks(feedback)
         }
        
         await user.save(); 
@@ -39,29 +39,34 @@ router.put("/createDatabase", async (request, response, next) => {
     } catch (error) {
       next(error);
     }
-  });
+});
 
-  router.get("/data", async(request,response,next)=>{
+
+  
+
+router.get("/data", async(request,response,next)=>{
     try{
     const result=[]
     for(let u of await User.findAll()){
         const user={
-          id:u.id,
+            id:u.id,
             username:u.username,
             email: u.email,
             password: u.password,
             // isEnabled: u.isEnabled,
             feedbacks:[],
-        }
-        for(let f in await Feedback.getFeedback()){
+        };
+        for(let f of await u.getFeedbacks()){  //eroare
             user.feedbacks.push({
-                key:f.id,
+                
+                
                 startingPoint:f.startingPoint,
                 endingPoint:f.endingPoint,
                 transportType:f.transportType,
                 observations:f.observations,
                 statisfactionLevel:f.statisfactionLevel,
-            })
+                key:f.id,
+            });
         }
         result.push(user)
     }
@@ -73,7 +78,7 @@ router.put("/createDatabase", async (request, response, next) => {
     }catch(error){
        next(error)
     } 
-  })
+})
 
-  export {router as mainRouter}
+export {router as mainRouter}
 
