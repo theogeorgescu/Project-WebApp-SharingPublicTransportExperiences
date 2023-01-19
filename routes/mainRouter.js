@@ -53,7 +53,6 @@ router.get("/data", async(request,response,next)=>{
             username:u.username,
             email: u.email,
             password: u.password,
-            // isEnabled: u.isEnabled,
             feedbacks:[],
         };
         for(let f of await u.getFeedbacks()){  //eroare

@@ -22,10 +22,7 @@ const User=sequelize.define("user",{
         type:DataTypes.STRING,
         allowNull:false
     }
-    // isEnabled:{
-    //     type:DataTypes.BOOLEAN,
-    //     defaultValue:true
-    // }
+   
 });
 
 export{User}
