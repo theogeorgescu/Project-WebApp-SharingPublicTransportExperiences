@@ -4,6 +4,7 @@ import{Feedback} from "../models/feedbackModel.js";
 
 
 const userRouter=express.Router();
+
 userRouter.get("/allUsers",async(request,response,next)=>{
     try{
         const user=await User.findAll()
@@ -25,42 +26,7 @@ userRouter.get("/allUsers",async(request,response,next)=>{
   // }
 })
 
-userRouter.get("/:userId",async(request,response)=>{
-  console.log("here 1 GET")
-  try{
-      const user=await User.findByPk(request.params.userId)
-      response.json(user)
-      return response.status(204).send()
-  }catch(error){
-      return response.status(500).send();
-  }
-})
 
-//get all feedbacks
-userRouter.get("/feedbacks",async(request,response,next)=>{
-  try{
-      const feedback=await Feedback.findAll()
-      if(feedback.length>0){
-          response.json(feedback)
-          return response.status(204).send()
-      }else{
-          return response.status(500).send();
-      }
-  }catch(error){
-      next(error)
-  }
-
-  
-// try{
-//   const users=await User.findAll()  //array of objects
-//   return response.status(200).json(users);
-// }catch(err){
-//     response.status(500).json(err);
-// }
-})
-
-
-//creates the user alone
 userRouter.post("/addUsers", async(request,response,next)=>{
     try{
     const user= await User.create(request.body)
@@ -73,17 +39,14 @@ userRouter.post("/addUsers", async(request,response,next)=>{
 
 
 //update user
-userRouter.put("/:userId", async(request,response,next)=>{
-  console.log("here")
+userRouter.put("/:userid", async(request,response,next)=>{
     try{
-        const user= await User.findByPk(request.params.userId)
+        const user= await User.findByPk(request.params.userid)
         if(user){
-
          await user.update(request.body)
-         response.status(202).json()
-        
+           response.status(204)
         }else{
-          response.status(404).json()  
+          response.sendStatus(404)
         }
       }catch(err){
         next(err)
@@ -91,62 +54,57 @@ userRouter.put("/:userId", async(request,response,next)=>{
 })
 
 
-
-
-//delete user - merge
-
+//delete user
 userRouter.delete("/:userid", async(request,response,next)=>{
     try{
         const user= await User.findByPk(request.params.userid)
         if(user){
-          // const feedbacks= await Feedback.findAll()
           await user.destroy()
-          console.log("destroyed")
-           response.sendStatus(204)
+           response.status(200)
         }else{
-          response.sendStatus(404)
+           response.sendStatus(404)
         }
         
       }catch(err){
-        console.log("ceva")
         next(err)
       }
 })
 
 
 // specific user's feedback list
-userRouter.get("/:userId/feedbacks",
-async (request, response)=>{
+userRouter.get(":userid/feedback",
+async (request, response, next)=>{
 try{
-    const user=await User.findByPk(request.params.userId)
+    const user=await User.findByPk(request.params.userid)
     if(user){
-        const feedbacks=await user.getFeedbacks() //problema
-            response.json(feedbacks)
+        const feedback=await user.getFeedbacks()
+        if(feedback.length>0){
+            response.json(feedback)
+        }else{
             response.sendStatus(204)
-      
+        }
     }else{
-      return response.status(404).send()
+        response.sendStatus(404)
     }
 }catch(error){
-  return response.status(500).send();
+    next(error)
 }
 })
 
 
+//post new feedback
 
-
-//post new feedback into user
-userRouter.post("/:userId/addFeedback",
+userRouter.post("/:userid/feedback",
 async(request,response,next)=>{
     try{
-        const user=await User.findByPk(request.params.userId);
+        const user=await User.create(request.body)
        if(user){
         const feedback=await Feedback.create(request.body)
         user.addFeedback(feedback)
         await user.save()
         response.status(201).location(user.id).send()
        }else{
-        return response.status(404).send()
+        response.sendStatus(404)
        }
        
        
@@ -156,23 +114,21 @@ async(request,response,next)=>{
 })
 
 
-
-
 //get feedback by id from user by id
 userRouter.get(
-    "/:userId/feedbacks/:feedbackId",
+    "/:userid/feedback/:feedbackid",
     async (request, response, next) => {
       try {
-        const user = await User.findByPk(request.params.userId);
+        const user = await User.findByPk(request.params.userid);
         if (user) {
           const feedbacks = await user.getFeedbacks({
-            where: { id: request.params.feedbackId },
+            where: { id: request.params.feedbackid },
           });
           const feedback = feedbacks.shift();  //select the first result from a array and return it as a json
           if (feedback) {
             response.json(feedback);
           } else {
-            return response.status(204).send()
+            response.sendStatus(404);
           }
         } else {
           response.sendStatus(404);
@@ -186,7 +142,7 @@ userRouter.get(
 
   //update feedback from user
   userRouter.put(
-    "/:userid/feedbacks/:feedbackid",
+    "/:userid/feedback/:feedbackid",
     async (request, response, next) => {
         try {
           const user = await User.findByPk(request.params.userid);
@@ -197,12 +153,12 @@ userRouter.get(
             const feedback = feedbacks.shift();  //select the first result from a array and return it as a json
             if (feedback) {
                 await feedback.update(request.body)
-                return response.status(204).send()
+              response.status(204)
             } else {
-              return response.status(404).send()
+              response.sendStatus(404);
             }
           } else {
-            return response.status(404).send()
+            response.sendStatus(404);
           }
         } catch (error) {
           next(error);
@@ -211,22 +167,22 @@ userRouter.get(
   );
 
 
-  //delete feedback from user 
+  //delete feedback from user
   userRouter.delete(
-    "/:userId/feedbacks/:feedbackId",
+    "/:userid/feedback/:feedbackid",
     async (request, response, next) => {
         try {
-          const user = await User.findByPk(request.params.userId);
+          const user = await User.findByPk(request.params.userid);
           if (user) {
             const feedbacks = await user.getFeedbacks({
-              where: { id: request.params.feedbackId },
+              where: { id: request.params.feedbackid },
             });
             const feedback = feedbacks.shift();  //select the first result from a array and return it as a json
             if (feedback) {
                 await feedback.destroy()
-                return response.status(204).send()
+              response.status(204)
             } else {
-              return response.status(404).send()
+              response.sendStatus(404);
             }
           } else {
             response.sendStatus(404);
