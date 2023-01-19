@@ -22,7 +22,7 @@ export default class ReviewForm extends React.Component {
     transportTypeRef = React.createRef();
     transportNameRef = React.createRef();
     leavingPointRef = React.createRef();
-    arrivngPointRef = React.createRef();
+    destinationPointRef = React.createRef();
     durationRef = React.createRef();
     leftHourRef = React.createRef();
     observationsRef = React.createRef();
@@ -78,11 +78,11 @@ export default class ReviewForm extends React.Component {
 
     var review = {
         leaving_point: String(this.leavingPointRef.current.value.toUpperCase()),
-        arriving_point: String(this.arrivngPointRef.current.value.toUpperCase()),
+        destination_point: String(this.arrivngPointRef.current.value.toUpperCase()),
         leaving_hour: String(this.leftHourRef.current.value),
         duration: parseInt(this.durationRef.current.value),
         observations: String(this.observationsRef.current.value),
-        rating: String(this.state.starNumber),
+        satisfaction_level: String(this.state.starNumber),
         congestion_level: parseInt(this.congestionLevelRef.current.value),
         userId: parseInt(this.props.userId),
         transportTypeId: parseInt(transportTypeDb.id),
@@ -93,7 +93,7 @@ export default class ReviewForm extends React.Component {
             var existingReviews = [...this.state.reviews];
             existingReviews.push(res.data);
             this.setState({ reviews: existingReviews });
-            toast("Recenzia a fost adaugata cu succes!")
+            toast("Review was added succesfully!")
         })
        
     }
@@ -102,10 +102,10 @@ export default class ReviewForm extends React.Component {
 
     handleSelect = () => {
         switch (this.transportTypeRef.current.value) {
-            case "Uber":
+            case "Tram":
                 this.setState({ placeholderText: "Example: B-47-ASD" });
                 break;
-            case "Metrou":
+            case "Subway":
                 this.setState({ placeholderText: "Example: M2" });
                 break;
             default:
@@ -119,24 +119,24 @@ export default class ReviewForm extends React.Component {
     render() {
         return <>
         <form className="form-container" onSubmit={this.handleSubmit}>
-            <label>Selectați tipul de transport</label>
+            <label>Select a mean of transport</label>
             <select className="form-control" ref={this.transportTypeRef} onChange={this.handleSelect}>
-                <option value="STB">STB</option>
-                <option value="Uber">Uber</option>
-                <option value="Metrou">Metrou</option>
+                <option value="Bus">Bus</option>
+                <option value="Tram">Tram</option>
+                <option value="Subway">Metro</option>
             </select>
-            <label>Mijloc de transport</label>
+            <label>Mean of transport</label>
             <input type="text" className="transportNamebox" ref={this.transportNameRef} placeholder={this.state.placeholderText} required></input>
-            <input type="text" className="transportNamebox" ref={this.leavingPointRef} placeholder="Punct de plecare" required></input>
-            <input type="text" className="transportNamebox" ref={this.arrivngPointRef} placeholder="Destinație" required></input>
-            <label>Ora plecării</label>
+            <input type="text" className="transportNamebox" ref={this.leavingPointRef} placeholder="Starting Point" required></input>
+            <input type="text" className="transportNamebox" ref={this.arrivngPointRef} placeholder="Destination" required></input>
+            <label>Time of leaving</label>
             <input type="time" className="numberInput" ref={this.leftHourRef} required></input>
-            <input type="text" className="durationInput" ref={this.durationRef} placeholder="Durata in minute" required></input>
-            <label>Nivelul de aglomerare</label>
+            <input type="text" className="durationInput" ref={this.durationRef} placeholder="Duration in minutes" required></input>
+            <label>Congestion level</label>
             <input type="number" className="numberInput" ref={this.congestionLevelRef} min={1} max={10} placeholder="1 - 10" required></input>
             <label>Observations</label>
             <textarea ref={this.observationsRef} className="textarea"></textarea>
-            <label>Rating</label>
+            <label>Satisfaction Level</label>
             <div className="ratingBar">
                 <span id={"star0"} onClick={() => this.starClick(1)} className="fa fa-star checked" ></span>
                 <span id={'star1'} onClick={() => this.starClick(2)} className="fa fa-star"></span>

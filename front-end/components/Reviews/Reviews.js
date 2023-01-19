@@ -70,11 +70,11 @@ export default class Reviews extends React.Component {
 
         var review = {
             leaving_point: String(this.leavingPointRef.current.value),
-            arriving_point: String(this.arrivngPointRef.current.value),
+            destination_point: String(this.arrivngPointRef.current.value),
             leaving_hour: String(this.leftHourRef.current.value),
             duration: parseInt(this.durationRef.current.value),
             observations: String(this.observationsRef.current.value),
-            rating: String(this.state.starNumber),
+            satisfaction_level: String(this.state.starNumber),
             congestion_level: parseInt(this.congestionLevelRef.current.value),
             userId: parseInt(this.state.userId),
             transportTypeId: parseInt(transportTypeDb.id),
@@ -115,7 +115,7 @@ export default class Reviews extends React.Component {
 
     handleInputChangeArriving = (event) => {
         let myReviews = [...this.state.reviews];
-        myReviews = myReviews.filter(review => review.arriving_point === event.target.value.toUpperCase())
+        myReviews = myReviews.filter(review => review.destination_point === event.target.value.toUpperCase())
         event.preventDefault()
         this.setState({
             searchFilter: event.target.value,
@@ -178,10 +178,10 @@ export default class Reviews extends React.Component {
             <div className="App container">
                 <NavigationBar />
                 <div className="spacing">
-                    <Button onClick={this.PressAddReview}>Adaugă recenzie</Button>
-                    <Button onClick={this.PressShowMyReviews}>Recenziile mele</Button>
-                    <Button onClick={this.PressFilterReview}>Filtru recenzii</Button>
-                    <Button onClick={this.PressShowAllReviews}>Toate recenziile</Button>
+                    <Button onClick={this.PressAddReview}>Add a review</Button>
+                    <Button onClick={this.PressShowMyReviews}>My reviews</Button>
+                    <Button onClick={this.PressFilterReview}>Review filter</Button>
+                    <Button onClick={this.PressShowAllReviews}>All reviews/Button>
                 </div>
                 {this.state.addButtonState === true ?
                     <ReviewForm userId={this.state.userId} />
@@ -192,15 +192,15 @@ export default class Reviews extends React.Component {
                     <form>
                         <div className="lander">
 
-                            <h3><span className="label label-default">Caută după punctul de plecare</span></h3>
+                            <h3><span className="label label-default">Search for starting point</span></h3>
 
-                            <h3><span className="label label-default">Caută după destinație</span></h3>
+                            <h3><span className="label label-default">Search for destination</span></h3>
                         </div>
 
                         <div className="fields">
                             <input type="text" placeholder="Punctul de plecare" name="searchFilter" onInput={this.handleInputChangeLeaving}></input>
 
-                            <input type="text" placeholder="Destinație" name="searchFilter" onInput={this.handleInputChangeArriving}></input>
+                            <input type="text" placeholder="Destination" name="searchFilter" onInput={this.handleInputChangeArriving}></input>
                         </div>
 
                         {(this.state.searchFilter.length > 0 && this.state.filteredReviews.length > 0) ?

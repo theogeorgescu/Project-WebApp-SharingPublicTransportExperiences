@@ -66,7 +66,7 @@ export default class Login extends React.Component {
                             <i className="fa fa-subway" aria-hidden="false"></i>
                         </div>
                         <div className="col-lg-12 login-title">
-                            {"<Cookie TransPort/>"}
+                            {"Bucharest Transportation v1.2"}
                         </div>
 
                         <div className="col-md-12 login-form">
@@ -102,7 +102,7 @@ export default class Login extends React.Component {
                                         </div>
 
                                         <Button onClick={() => this.nextPath("/reviews")} type="button"
-                                            className="btn btn-success" block>Vezi recenzii
+                                            className="btn btn-success" block>See reviews
                                             </Button>
                                     </div>
                                     <div className="text-right">

@@ -22,28 +22,28 @@ export default class FilteredReviews extends React.Component {
     validateFields = (review) => {
 
         review.leaving_point = review.leaving_point.toUpperCase();
-        review.arriving_point = review.arriving_point.toUpperCase();
+        review.destination_point = review.destination_point.toUpperCase();
 
         var id = parseInt(review.duration)
         if (isNaN(id)) {
-            toast("Editare eșuată! Durata trebuie exprimată în numărul de minute");
+            toast("Error! Duration must be expressed in minutes");
             this.setState({ isOk: false });
         }
 
-        var rating = parseInt(review.rating);
-        if (isNaN(rating) || (rating > 5 || rating < 1)) {
-            toast("Editare eșuată! Rating-ul trebuie sa fie in intervalul 1 - 5");
+        var satisfaction_level = parseInt(review.satisfaction_level);
+        if (isNaN(satisfaction_level) || (satisfaction_level > 5 || satisfaction_level < 1)) {
+            toast("Error! Satisfation level must be expressed between 1 and 5");
             this.setState({ isOk: false });
         }
 
         var congestion_level = parseInt(review.congestion_level);
         if (isNaN(congestion_level) || (congestion_level > 10 || congestion_level < 1)) {
-            toast("Editare eșuată! Nivelul de aglomerare trebuie sa fie in intervalul 1 - 10");
+            toast("Error! Congestion level must be expressed between 1 and 10");
             this.setState({ isOk: false });
         }
 
         if (/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(review.leaving_hour) === false) {
-            toast("Editare eșuată! Ora plecării nu este validă!");
+            toast("Error! Leaving hour is not valid");
             this.setState({ isOk: false });
         }
     }
@@ -57,7 +57,7 @@ export default class FilteredReviews extends React.Component {
     }
 
     deleteReview(id) {
-        Axios.delete(backUrl + '/reviews/' + id).then(toast('Recenzia a fost stearsa cu succes!'));
+        Axios.delete(backUrl + '/reviews/' + id).then(toast('Review was added successfully!'));
         var reviewsCopy = [...this.state.reviews];
         var review = reviewsCopy.find(review => review.id === id);
         var index = reviewsCopy.indexOf(review);
@@ -68,8 +68,8 @@ export default class FilteredReviews extends React.Component {
     }
 
     editContent = async (id) => {
-        if (document.getElementById("button" + id).innerHTML === "Editeaza") {
-            document.getElementById("button" + id).innerHTML = "Salveaza";
+        if (document.getElementById("button" + id).innerHTML === "Edit") {
+            document.getElementById("button" + id).innerHTML = "Save";
 
             document.getElementById(id).contentEditable = true;
             document.getElementById(id).childNodes[0].contentEditable = false;
@@ -93,11 +93,11 @@ export default class FilteredReviews extends React.Component {
             var review = {
                 id: reviewId,
                 leaving_point: tabelRaw.childNodes[1].innerText,
-                arriving_point: tabelRaw.childNodes[2].innerText,
+                destination_point: tabelRaw.childNodes[2].innerText,
                 leaving_hour: tabelRaw.childNodes[3].innerText,
                 duration: parseInt(tabelRaw.childNodes[4].innerText),
                 observations: tabelRaw.childNodes[6].innerText,
-                rating: tabelRaw.childNodes[7].innerText,
+                satisfaction_level: tabelRaw.childNodes[7].innerText,
                 congestion_level: parseInt(tabelRaw.childNodes[5].innerText),
                 userId: userId,
                 transportTypeId: transportTypeId,
@@ -108,7 +108,7 @@ export default class FilteredReviews extends React.Component {
             if (this.state.isOk === true) {
                 Axios.put(backUrl + '/reviews/' + id, review, { headers: { "Authorization": getToken() } }).then(toast("Recenzia a fost editata cu succes!"));
             }
-            document.getElementById("button" + id).innerHTML = "Editeaza";
+            document.getElementById("button" + id).innerHTML = "Edit";
 
         }
 
@@ -119,15 +119,15 @@ export default class FilteredReviews extends React.Component {
         return <>
             <Table striped bordered hover responsive>
                 <tbody>
-                    <tr>
+                    <tr >
                         <th>ID</th>
-                        <th>Punct de plecare</th>
-                        <th>Destinație</th>
-                        <th>Ora plecării</th>
-                        <th>Durata călătoriei</th>
-                        <th>Nivelul de aglomerare</th>
-                        <th>Observații</th>
-                        <th>Rating</th>
+                        <th>Starting Point</th>
+                        <th>Destination Point</th>
+                        <th>Leaving Hour</th>
+                        <th>Duration</th>
+                        <th>Congestion Level</th>
+                        <th>Observations</th>
+                        <th>Satisfaction Level</th>
                     </tr>
                     {this.props.allowEditing === true ?
                         this.state.reviews.map(review =>
@@ -135,14 +135,14 @@ export default class FilteredReviews extends React.Component {
                             <tr id={review.id} key={review.id}>
                                 <td>{review.transportTypeId}</td>
                                 <td>{review.leaving_point}</td>
-                                <td>{review.arriving_point}</td>
+                                <td>{review.destination_point}</td>
                                 <td>{review.leaving_hour}</td>
                                 <td>{review.duration}</td>
                                 <td>{review.congestion_level}</td>
                                 <td>{review.observations}</td>
-                                <td>{review.rating}</td>
-                                <td><Button id={"button" + review.id} className="btn-primary" onClick={() => { this.editContent(review.id) }}>Editeaza</Button>
-                                    <Button className="btn-danger" onClick={() => { this.deleteReview(review.id) }}>Sterge</Button>
+                                <td>{review.satisfaction_level}</td>
+                                <td><Button id={"button" + review.id} className="btn-primary" onClick={() => { this.editContent(review.id) }}>Edit</Button>
+                                    <Button className="btn-danger" onClick={() => { this.deleteReview(review.id) }}>Delete</Button>
                                 </td>
                             </tr>) :
                         this.props.reviews.map(review =>
@@ -150,12 +150,12 @@ export default class FilteredReviews extends React.Component {
                             <tr key={review.id}>
                                 <td>{review.transportTypeId}</td>
                                 <td>{review.leaving_point}</td>
-                                <td>{review.arriving_point}</td>
+                                <td>{review.destination_point}</td>
                                 <td>{review.leaving_hour}</td>
                                 <td>{review.duration}</td>
                                 <td>{review.congestion_level}</td>
                                 <td>{review.observations}</td>
-                                <td>{review.rating}</td>
+                                <td>{review.satisfaction_level}</td>
                             </tr>)
 
                     }

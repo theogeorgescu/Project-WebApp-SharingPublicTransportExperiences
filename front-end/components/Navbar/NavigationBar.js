@@ -10,7 +10,7 @@ function NavigationBar(props) {
             <Navbar className="color-nav" fluid collapseOnSelect fixedTop>
                 <Navbar.Header>
                     <Navbar.Brand>
-                        <Link to="/">{"<Cookie TransPort/>"}</Link>
+                        <Link to="/">{"Bucharest Transportation v1.2"}</Link>
                     </Navbar.Brand>
                     <Navbar.Toggle />
                 </Navbar.Header>
